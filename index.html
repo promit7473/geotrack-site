@@ -85,7 +85,7 @@ footer { color: var(--mute); font-size: 0.88rem; border-top: 1px solid var(--lin
 @media (max-width: 640px) {
   .hero { padding-block: 32px 4px; }
   section { margin-block: 38px; }
-  .hero-loop img { max-width: 440px; }
+  .hero-loop img { max-width: 100%; }
   .hero-loop figcaption { text-align: justify; }
   .swipe { display: block; color: var(--mute); font-size: 0.85rem; margin: 0 0 8px; text-align: left; }
   .scroll { -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
@@ -190,7 +190,7 @@ footer p { margin: 0 0 8px; text-align: left; }
 .steps h3 { margin: 0 0 6px; font-size: 1rem; }
 .steps p { color: var(--ink); text-align: justify; hyphens: auto; }
 .pro, .con { text-align: justify; hyphens: auto; }
-@media (max-width: 640px) { .steps { grid-template-columns: 1fr; } .hero-loop img { max-width: 440px; } }
+@media (max-width: 640px) { .steps { grid-template-columns: 1fr; } .hero-loop img { max-width: 100%; } }
 </style>
 
 <div lang="en" class="wrap">
@@ -210,8 +210,8 @@ footer p { margin: 0 0 8px; text-align: left; }
 <figure class="hero-loop">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="figures/hero_loop_poster.webp">
-    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="440" height="650">
-    <img src="figures/hero_loop.webp" width="888" height="650" alt="GPS cut-off demo in two rows. After GPS is cut, the estimate stays on the reference path over town and river, while over farmland no map fix is accepted and the estimate drifts away. Camera frames are included on wider screens.">
+    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="728" height="604">
+    <img src="figures/hero_loop.webp" width="888" height="650" alt="GPS cut-off demo in two rows. After GPS is cut, the estimate stays on the reference path over town and river, while over farmland no map fix is accepted and the estimate drifts away.">
   </picture>
   <img class="hero-still" src="figures/hero_loop_poster.webp" width="888" height="650" alt="Last frame of the GPS cut-off demo, about 100 seconds after the cut.">
   <label class="motion-control"><input class="motion-toggle" type="checkbox"> Show still image</label>
@@ -220,7 +220,7 @@ footer p { margin: 0 0 8px; text-align: left; }
     <p><strong>Not yet full GPS-denied performance:</strong> the cut is simulated by withholding GPS position from the filter, and attitude still comes from a GPS-aided INS.</p>
     <details>
       <summary>Legend and data sources</summary>
-      <p>Blue: reference path from the GPS-aided INS. Red: our baseline filter. Yellow: odometry alone. Camera frames appear on wider screens. Frames: Leaving the City dataset, CC BY 4.0. Map: NRW DOP10 orthophotos.</p>
+      <p>Blue: reference path from the GPS-aided INS. Red: our baseline filter. Yellow: odometry alone. Frames: Leaving the City dataset, CC BY 4.0. Map: NRW DOP10 orthophotos.</p>
     </details>
   </figcaption>
 </figure>
