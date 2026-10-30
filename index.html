@@ -191,8 +191,7 @@ footer p { margin: 0 0 8px; text-align: left; }
 .steps p { color: var(--ink); text-align: justify; hyphens: auto; }
 .pro, .con { text-align: justify; hyphens: auto; }
 @media (max-width: 640px) { .steps { grid-template-columns: 1fr; } .hero-loop img { max-width: 100%; } }
-.hero-loop picture img, .hero-loop .hero-still { max-width: 820px; }
-@media (max-width: 640px) { .hero-loop picture img, .hero-loop .hero-still { max-width: 100%; } }
+.hero-loop picture img, .hero-loop .hero-still { max-width: 100%; border-radius: 0; }
 </style>
 
 <div lang="en" class="wrap">
@@ -212,17 +211,17 @@ footer p { margin: 0 0 8px; text-align: left; }
 <figure class="hero-loop">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="figures/hero_loop_poster.webp">
-    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="728" height="848">
-    <img src="figures/hero_loop.webp" width="888" height="824" alt="GPS cut-off demo in two rows. After GPS is cut, the estimate stays on the reference path over town and river, while over farmland no map fix is accepted and the estimate drifts away.">
+    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="728" height="1032">
+    <img src="figures/hero_loop.webp" width="988" height="570" alt="Six clips of real flight after GPS is cut, over different terrain. Over town, city and mixed terrain our estimate stays close to the true path; over forest and farmland map fixes are rare or absent and the estimate drifts away. A time bar below shows GPS on, then the time since the cut.">
   </picture>
-  <img class="hero-still" src="figures/hero_loop_poster.webp" width="888" height="824" alt="Last frame of the GPS cut-off demo, about 100 seconds after the cut.">
+  <img class="hero-still" src="figures/hero_loop_poster.webp" width="988" height="570" alt="Last frame of the GPS cut-off demo, about 100 seconds after the cut.">
   <label class="motion-control"><input class="motion-toggle" type="checkbox"> Show still image</label>
   <figcaption>
-    <p>What happens when GPS is cut, on one real flight, sped up about ten times. Each row shows whether a map fix was used, the position error and its history since the cut. Over town the map fixes keep the estimate on the true path. Over farmland the current matcher accepts no fix, and the estimate drifts.</p>
+    <p>What happens when GPS is cut, on six parts of one real flight, sped up about ten times. The white line is the true path and the red line is our estimate, with a small view of the real camera in each clip.</p>
     <p><strong>Not yet full GPS-denied performance:</strong> the cut is simulated by withholding GPS position from the filter, and attitude still comes from a GPS-aided INS.</p>
     <details>
       <summary>Legend and data sources</summary>
-      <p>True path: reference from the GPS-aided INS. Estimate: our baseline filter. Odometry only: the same run without map fixes. Green ticks in the history mark frames where a map fix was used. Both histories share one scale. Frames: Leaving the City dataset, CC BY 4.0. Map: NRW DOP10 orthophotos.</p>
+      <p>True path: reference from the GPS-aided INS. Our estimate: the baseline filter, with SuperPoint and LightGlue. Median error over the full runs without GPS: 1.4 m, 1.5 m and 1.6 m in the three urban clips, 3.4 m in mixed terrain, 8.2 m in forest and fields, and 63 m over farmland, where no fix was accepted. Frames: Leaving the City dataset, CC BY 4.0. Map: NRW DOP10 orthophotos.</p>
     </details>
   </figcaption>
 </figure>
