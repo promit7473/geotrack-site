@@ -171,12 +171,32 @@ footer p { margin: 0 0 8px; text-align: left; }
   .baseline-table th, .baseline-table td { padding-right: 8px; font-size: 0.875rem; }
   .baseline-table td.num, .baseline-table th.num { padding-right: 8px; }
 }
+.abstract { max-width: 920px; margin: 28px auto 0; padding: 22px 24px; background: var(--soft); border-radius: 10px; }
+.abstract h2 { font-size: 1.15rem; margin: 0 0 10px; color: var(--accent); }
+.abstract p { font-size: 1.0625rem; line-height: 1.65; margin: 0 0 12px; }
+.abstract p:last-child { margin-bottom: 0; }
+@media (max-width: 640px) { .abstract { padding: 16px 16px; } .abstract p { font-size: 1rem; } }
+/* One column: every block shares the same left and right edges. */
+.wrap { max-width: 1000px; }
+.hero-loop, .abstract, main > section, main > section.method, footer { max-width: 1000px; margin-inline: auto; }
+.method > figure > figcaption, .method > h2, .method > .method-status, .method > .steps, .method > .steps-title { max-width: none; margin-inline: 0; }
+.hero-loop img { max-width: 100%; }
+.hero-loop figcaption { max-width: none; }
+.abstract { margin-inline: auto; }
+.figure-open { display: inline-flex; }
+.steps-title { margin-top: 32px; }
+.steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 12px; }
+.steps > div { padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.steps h3 { margin: 0 0 6px; font-size: 1rem; }
+.steps p { color: var(--ink); text-align: justify; hyphens: auto; }
+.pro, .con { text-align: justify; hyphens: auto; }
+@media (max-width: 640px) { .steps { grid-template-columns: 1fr; } .hero-loop img { max-width: 440px; } }
 </style>
 
-<div class="wrap">
+<div lang="en" class="wrap">
 <header class="hero">
   <h1>GeoTrack</h1>
-  <p class="subtitle">Learning When to Trust a Map Fix During GPS&#8209;Denied UAV Flight</p>
+  <p class="subtitle">Lost, Not Fooled: Learning What to Trust When a Drone Loses GPS</p>
   <p class="author"><a href="https://promit7473.github.io/">Meraj Hossain Promit</a></p>
   <p class="affil">University of Dhaka, Bangladesh</p>
   <div class="buttons">
@@ -190,21 +210,25 @@ footer p { margin: 0 0 8px; text-align: left; }
 <figure class="hero-loop">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="figures/hero_loop_poster.webp">
-    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="440" height="612">
-    <img src="figures/hero_loop.webp" width="888" height="612" alt="Aerial tracking comparison. Top: town and river with accepted map fixes. Bottom: farmland without accepted map fixes, where the estimate drifts from the reference. Camera frames are included on wider screens.">
+    <source media="(max-width: 640px)" srcset="figures/hero_loop_phone.webp" width="440" height="650">
+    <img src="figures/hero_loop.webp" width="888" height="650" alt="GPS cut-off demo in two rows. After GPS is cut, the estimate stays on the reference path over town and river, while over farmland no map fix is accepted and the estimate drifts away. Camera frames are included on wider screens.">
   </picture>
-  <img class="hero-still" src="figures/hero_loop_poster.webp" width="888" height="612" alt="Still of the town and farmland tracking comparison.">
+  <img class="hero-still" src="figures/hero_loop_poster.webp" width="888" height="650" alt="Last frame of the GPS cut-off demo, about 100 seconds after the cut.">
   <label class="motion-control"><input class="motion-toggle" type="checkbox"> Show still image</label>
   <figcaption>
-    <p>One flight at three times flight speed. Top: accepted map fixes keep the error low. Bottom: after 150 seconds without an accepted map fix, the estimate drifts.</p>
-    <p><strong>Not GPS-denied performance:</strong> both rows use GPS-aided attitude and start from the true position.</p>
+    <p>What happens when GPS is cut, on one real flight, sped up about ten times. The bar shows GPS on, then the time since the cut. Top: map fixes keep the estimate on the reference path. Bottom: over farmland the current matcher accepts no fix, and the estimate drifts.</p>
+    <p><strong>Not yet full GPS-denied performance:</strong> the cut is simulated by withholding GPS position from the filter, and attitude still comes from a GPS-aided INS.</p>
     <details>
       <summary>Legend and data sources</summary>
       <p>Blue: reference path from the GPS-aided INS. Red: our baseline filter. Yellow: odometry alone. Camera frames appear on wider screens. Frames: Leaving the City dataset, CC BY 4.0. Map: NRW DOP10 orthophotos.</p>
     </details>
   </figcaption>
 </figure>
-<p class="tldr"><b>TL;DR</b> A drone that loses GPS can keep locating itself by matching its video to a map, but a match can be confidently wrong. GeoTrack asks whether a learned memory of recent frames can tell a good fix from a bad one, and tests that against the simple rules used today.</p>
+<section class="abstract" aria-label="Abstract">
+  <h2>Abstract</h2>
+  <p>GPS signals are faint, and a cheap jammer can drown them out. When that happens mid-flight, a drone is left with only what it sees and what it remembers. Matching its camera to a map can recover its position to within metres, yet every fix carries the same quiet risk: it can be wrong and still look right. Today's trackers judge each fix almost on its own, with rules written by hand. GeoTrack starts from a different idea: a fix should be judged the way a navigator judges a landmark, against the whole journey so far. A recurrent memory follows how match quality, motion and the predicted position evolve, then decides how far each new fix may move the belief, while geometry alone supplies the position. The aim is a drone that knows the difference between being certain, being unsure and being lost, and says so.</p>
+  <p>First tests on one real flight show why this matters. With attitude still taken from a GPS-aided INS, map fixes hold the estimate to about 1.5 m over town, while over farmland our current matcher accepts none and the estimate drifts about 90 m in 200 seconds. Whether memory beats simple rules is the open question this project sets out to test.</p>
+</section>
 
 <main>
 <section>
@@ -238,6 +262,7 @@ footer p { margin: 0 0 8px; text-align: left; }
     <a class="figure-open" href="figures/fig_method.webp">Open the method diagram at full size</a>
     <figcaption>A frozen matcher gives a map fix for each frame. A recurrent network, shown as a GRU with an LSTM to be compared, carries a memory across frames and sets how much the belief update trusts each fix. It never predicts position, because geometry supplies that. The frames, map, matches and SuperPoint feature maps are real outputs from the running pipeline. The heatmaps follow the update formula for an imagined frame whose strongest match is wrong.</figcaption>
   </figure>
+  <h3 class="steps-title">Design principles</h3>
   <div class="steps">
     <div><h3>Known start</h3><p>GPS works until a cutoff, which gives the start state. After that, only a local map crop around the prediction is searched.</p></div>
     <div><h3>Same matcher for every method</h3><p>The matcher is frozen and fixes are logged, so any gain comes from trust and not from better matching.</p></div>
@@ -252,8 +277,8 @@ footer p { margin: 0 0 8px; text-align: left; }
   <div class="tablewrap"><table class="stack">
     <thead><tr><th scope="col">Dataset</th><th scope="col">Role</th><th scope="col">Platform</th><th scope="col">Height above ground</th></tr></thead>
     <tbody>
-      <tr><td class="name">Leaving the City (ECCV 2026)</td><td data-label="Role">Development and main evaluation</td><td data-label="Platform">Microlight</td><td data-label="Height">About 270&#8211;680 m on the segments tested so far</td></tr>
-      <tr><td class="name">MARS-LVIG (IJRR 2024)</td><td data-label="Role">Drone validation, including ordinary GPS comparison</td><td data-label="Platform">DJI M300</td><td data-label="Height">80&#8211;130 m</td></tr>
+      <tr><td class="name">Leaving the City (ECCV 2026)</td><td data-label="Role">Development and main evaluation</td><td data-label="Platform">Microlight</td><td data-label="Height">About 270 to 680 m on the segments tested so far</td></tr>
+      <tr><td class="name">MARS-LVIG (IJRR 2024)</td><td data-label="Role">Drone validation, including ordinary GPS comparison</td><td data-label="Platform">DJI M300</td><td data-label="Height">80 to 130 m</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -271,7 +296,7 @@ footer p { margin: 0 0 8px; text-align: left; }
   <h3>Experiment status</h3>
   <div class="tablewrap"><table class="stack progress-table">
     <thead><tr><th scope="col">ID</th><th scope="col">Experiment</th><th scope="col">Status</th><th scope="col">Result so far</th></tr></thead>
-    <tbody><tr><td class="id">E00</td><td class="name">Geometry and data checks</td><td class="state"><span class="pill done">Done</span></td><td class="res">Image footprints within a median of 6 m of the published ones, first segment</td></tr><tr><td class="id">E01</td><td class="name">Baseline pipeline</td><td class="state"><span class="pill done">Done</span></td><td class="res">Working baseline on one 9 km segment; first measured errors below</td></tr><tr><td class="id">E02</td><td class="name">Matcher comparison</td><td class="state"><span class="pill running">In progress</span></td><td class="res">Probe at the true position with an 800 m crop, 40 farmland frames: LoFTR 21 correct fixes and SuperPoint + LightGlue 2 with the 2021 map; 7 and 2 with the 2019 map. Neither gave a wrong fix. Not yet tested in the filter.</td></tr><tr><td class="id">E03</td><td class="name">How often real false fixes happen</td><td class="state"><span class="pill running">In progress</span></td><td class="res">Three 200-second segments. Accepted fixes with the 2021 map: 96% town, 37% mixed, 0% farmland. With the 2019 map: 67%, 16%, 0%. No accepted false fix so far, so missing fixes are the main failure seen, not confident wrong ones. Forest not yet tested.</td></tr><tr><td class="id">E04</td><td class="name">Does history predict fix correctness?</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E05</td><td class="name">Closed-loop tracking against baselines</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E06</td><td class="name">Uncertainty calibration on long sequences</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E07</td><td class="name">Attitude without GPS aiding</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E08</td><td class="name">Outages and recovery</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E09</td><td class="name">New routes, seasons, drones and satellite maps</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr></tbody>
+    <tbody><tr><td class="id">E00</td><td class="name">Geometry and data checks</td><td class="state"><span class="pill done">Done</span></td><td class="res">Image footprints within a median of 6 m of the published ones, first segment</td></tr><tr><td class="id">E01</td><td class="name">Baseline pipeline</td><td class="state"><span class="pill done">Done</span></td><td class="res">Working baseline on one 9 km segment; first measured errors below</td></tr><tr><td class="id">E02</td><td class="name">Matcher comparison</td><td class="state"><span class="pill running">In progress</span></td><td class="res">Probe at the true position with an 800 m crop, 40 farmland frames: LoFTR 21 correct fixes and SuperPoint + LightGlue 2 with the 2021 map; 7 and 2 with the 2019 map. Neither gave a wrong fix. Not yet tested in the filter.</td></tr><tr><td class="id">E03</td><td class="name">How often real false fixes happen</td><td class="state"><span class="pill running">In progress</span></td><td class="res">Three 200-second segments. Accepted fixes with the 2021 map: 96% town, 37% mixed, 0% farmland. With the 2019 map: 67%, 16%, 0%. No accepted false fix so far, so missing fixes are the main failure seen, not confident wrong ones. Forest not yet tested.</td></tr><tr><td class="id">E04</td><td class="name">Does history predict fix correctness?</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E05</td><td class="name">Closed-loop tracking against baselines</td><td class="state"><span class="pill running">In progress</span></td><td class="res">First GPS cut-off runs without a learned model. Town, SuperPoint + LightGlue: 1.41 m median and 6.0 m maximum over 190 seconds, against 4.4 m median for odometry alone. Farmland: no fixes, 90 m off after 200 seconds. LoFTR runs are in progress.</td></tr><tr><td class="id">E06</td><td class="name">Uncertainty calibration on long sequences</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E07</td><td class="name">Attitude without GPS aiding</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E08</td><td class="name">Outages and recovery</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr><tr><td class="id">E09</td><td class="name">New routes, seasons, drones and satellite maps</td><td class="state"><span class="pill planned">Planned</span></td><td class="res"></td></tr></tbody>
   </table></div>
 </section>
 </main>
