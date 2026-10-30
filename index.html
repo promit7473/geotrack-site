@@ -13,19 +13,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: one centred academic project column, with the method figure as the widest element. */
-:root {
+:root { color-scheme: light;
   --bg: #ffffff; --ink: #1d1d1f; --mute: #5f6368; --line: #dfe3e8; --soft: #f6f7f9;
   --accent: #2563b0; --accent-soft: #e8f0fa; --warn: #a76614; --warn-soft: #fbf1e3; --good: #23784a; --bad: #b83a33;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #15171a; --ink: #eceef1; --mute: #a4abb4; --line: #33383e; --soft: #1e2125;
-  --accent: #7fb2ee; --accent-soft: #1c2c40; --warn: #e4ae68; --warn-soft: #33281a; --good: #6dcb96; --bad: #ee8e87; color-scheme: dark;
-} }
-:root[data-theme="dark"] {
-  --bg: #15171a; --ink: #eceef1; --mute: #a4abb4; --line: #33383e; --soft: #1e2125;
-  --accent: #7fb2ee; --accent-soft: #1c2c40; --warn: #e4ae68; --warn-soft: #33281a; --good: #6dcb96; --bad: #ee8e87; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased;
